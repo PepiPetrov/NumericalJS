@@ -1,32 +1,51 @@
+import every from 'lodash/every';
 import NumpyArrayUtils from './NumpyArrayUtils';
-
+import * as util from 'util';
 export default class NumpyArray<T> {
-  data: Array<T>;
-  shape: Array<number>;
-  private _data: Array<any>;
+  data: T[];
+  shape: number[];
 
-  constructor(array: Array<T>) {
+  constructor(array: T[]) {
     this.data = array;
-    this._data = array;
-    this.shape = NumpyArrayUtils.getShape(this._data);
+    this.shape = NumpyArrayUtils.getShape(this.data);
   }
 
-  public reshape(newShape: Array<number>) {
-    let numElementsOriginal = NumpyArrayUtils.getElements(this.shape);
-    let numElementsNew = NumpyArrayUtils.getElements(newShape);
+  public reshape(newShape: number[]) {
+    const numElementsOriginal = this.getNumElements(this.shape);
+    const numElementsNew = this.getNumElements(newShape);
 
-    if (numElementsOriginal != numElementsNew) {
+    if (numElementsOriginal !== numElementsNew) {
       throw new Error('Original and new shape are different, cannot reshape.');
     }
 
-    let reshaper = new NumpyArrayUtils.Reshaper(
+    const reshaper = new NumpyArrayUtils.Reshaper<T>(
       this.data,
       newShape,
       this.shape
     );
 
-    this.data = reshaper.reshape();
-    this._data = this.data;
-    this.shape = NumpyArrayUtils.getShape(this._data);
+    return new NumpyArray<T>(reshaper.reshape());
+  }
+
+  public isSquare(): boolean {
+    const [firstDim, ...otherDims] = this.shape;
+    return every(otherDims, dimSize => dimSize === firstDim);
+  }
+
+  public flatten() {
+    return this.data.flat(this.shape.length);
+  }
+
+  public toString() {
+    return `Shape: ${this.shape.toString()}`;
+  }
+
+  // This is done for custom string when printing the object
+  [util.inspect.custom](): string {
+    return this.toString();
+  }
+
+  private getNumElements(shape: number[]): number {
+    return NumpyArrayUtils.getNumElements(shape);
   }
 }

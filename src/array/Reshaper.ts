@@ -1,40 +1,38 @@
-export default class Reshaper {
-  private data: Array<any>;
+export default class Reshaper<T> {
+  private data: T[];
   private newShape: Array<number>;
-  private elemIndex: number;
 
-  constructor(
-    data: Array<any>,
-    newShape: Array<number>,
-    oldShape: Array<number>
-  ) {
-    this.data = data.flat(oldShape.length);
+  constructor(data: T[], newShape: Array<number>, oldShape: Array<number>) {
+    this.data = data.flat(oldShape.length) as T[];
     this.newShape = newShape;
-    this.elemIndex = 0;
   }
 
-  public reshape(): any[] {
-    return this.nestDimensions(0, this.data, this.newShape);
+  public reshape(): T[] {
+    return this.unflattenArray(this.data, this.newShape);
   }
 
-  private nestDimensions(
-    dimIndex: number,
-    arr: Array<any>,
-    dim: Array<number>
-  ): Array<any> {
-    let result: Array<any> = [];
+  private unflattenArray(arr: Array<T>, dim: Array<number>) {
+    let elemIndex = 0;
 
-    if (dimIndex === dim.length - 1) {
-      result = result.concat(
-        arr.slice(this.elemIndex, this.elemIndex + dim[dimIndex])
-      );
-      this.elemIndex += dim[dimIndex];
-    } else {
-      for (let i = 0; i < dim[dimIndex]; i++) {
-        result.push(this.nestDimensions(dimIndex + 1, arr, dim));
+    if (!dim || !arr) return [];
+
+    const nest = (dimIndex: number): Array<any> => {
+      let result: Array<any> = [];
+
+      if (dimIndex === dim.length - 1) {
+        for (let i = elemIndex; i < elemIndex + dim[dimIndex]; i++) {
+          result.push(arr[i]);
+        }
+        elemIndex += dim[dimIndex];
+      } else {
+        for (let i = 0; i < dim[dimIndex]; i++) {
+          result.push(nest(dimIndex + 1));
+        }
       }
-    }
 
-    return result;
+      return result;
+    };
+
+    return nest(0);
   }
 }

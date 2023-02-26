@@ -1,22 +1,35 @@
 import NumpyArray from './array/NumpyArray';
+// const Numpy = {
+//   Array: NumpyArray,
+// };
 
-export default class Numpy {
-  static Array = NumpyArray;
+// export default Numpy;
+
+import isEmpty from 'lodash/isEmpty';
+import times from 'lodash/times';
+import tail from 'lodash/tail';
+import map from 'lodash/map';
+
+export default function createMatrix(shape: number[]): any {
+  if (isEmpty(shape)) {
+    return null;
+  }
+
+  const matrix = times(shape[0], () => createMatrix(tail(shape)));
+
+  if (shape.length === 1) {
+    return map(matrix, () => Math.random());
+  }
+
+  return matrix;
 }
 
-var matrix: Array<any> = [
-  [
-    [-0.39490148, 0.14553113],
-    [-1.56570925, 0.65206831],
-  ],
+export let matrixNDShape: Array<number> = [4, 4, 4];
 
-  [
-    [-1.20548858, 0.76422886],
-    [-0.54680172, 1.46030235],
-  ],
-];
+export let matrixND: Array<any> = createMatrix(matrixNDShape);
 
-var array = new NumpyArray<Array<any>>(matrix);
+let array = new NumpyArray<Array<Number>>(matrixND);
 
-array.reshape([4, 2]);
-console.log(array.data.filter(x => x.length != 0));
+let newArray = array.reshape([8, 4, 2]);
+
+console.log(newArray.shape);

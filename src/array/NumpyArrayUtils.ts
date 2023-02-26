@@ -1,31 +1,21 @@
 import Reshaper from './Reshaper';
-
+import isArray from 'lodash/isArray';
+import reduce from 'lodash/reduce';
 export default class NumpyArrayUtils {
   static Reshaper = Reshaper;
-  static getShape(data: Array<any>): Array<number> {
-    let _data = data;
-    let dim = [];
 
-    for (;;) {
-      dim.push(_data.length);
+  static getShape(data: any[]): number[] {
+    const dim = [];
 
-      if (Array.isArray(_data[0])) {
-        _data = _data[0];
-      } else {
-        break;
-      }
+    while (isArray(data)) {
+      dim.push(data.length);
+      data = data[0];
     }
 
     return dim;
   }
 
-  static getElements(shape: number[]) {
-    let numElements: number = 1;
-
-    for (let i = 0; i < shape.length; i++) {
-      numElements *= shape[i];
-    }
-
-    return numElements;
+  static getNumElements(shape: number[]): number {
+    return reduce(shape, (acc, val) => acc * val, 1);
   }
 }
