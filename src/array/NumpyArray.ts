@@ -1,6 +1,7 @@
 import every from 'lodash/every';
 import NumpyArrayUtils from './NumpyArrayUtils';
-import * as util from 'util';
+import { inspect } from 'util';
+
 export default class NumpyArray<T> {
   data: T[];
   shape: number[];
@@ -41,7 +42,7 @@ export default class NumpyArray<T> {
   }
 
   // This is done for custom string when printing the object
-  [util.inspect.custom](): string {
+  [inspect.custom](): string {
     return this.toString();
   }
 
