@@ -2,8 +2,8 @@ export default class Reshaper<T> {
   private data: T[];
   private newShape: Array<number>;
 
-  constructor(data: T[], newShape: Array<number>, oldShape: Array<number>) {
-    this.data = data.flat(oldShape.length) as T[];
+  constructor(data: T[], newShape: Array<number>) {
+    this.data = data.flat(Infinity) as T[];
     this.newShape = newShape;
   }
 
@@ -19,7 +19,7 @@ export default class Reshaper<T> {
     const nest = (dimIndex: number): Array<any> => {
       let result: Array<any> = [];
 
-      if (dimIndex === dim.length - 1) {
+      if (dimIndex == dim.length - 1) {
         for (let i = elemIndex; i < elemIndex + dim[dimIndex]; i++) {
           result.push(arr[i]);
         }

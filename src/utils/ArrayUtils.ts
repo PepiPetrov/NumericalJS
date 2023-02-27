@@ -1,13 +1,12 @@
 import Reshaper from './Reshaper';
-import isArray from 'lodash/isArray';
-import reduce from 'lodash/reduce';
-export default class NumpyArrayUtils {
+
+export default class ArrayUtils {
   static Reshaper = Reshaper;
 
   static getShape(data: any[]): number[] {
     const dim = [];
 
-    while (isArray(data)) {
+    while (Array.isArray(data)) {
       dim.push(data.length);
       data = data[0];
     }
@@ -16,6 +15,6 @@ export default class NumpyArrayUtils {
   }
 
   static getNumElements(shape: number[]): number {
-    return reduce(shape, (acc, val) => acc * val, 1);
+    return shape.reduce((acc, val) => acc * val, 1);
   }
 }

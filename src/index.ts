@@ -1,6 +1,4 @@
-import NumpyArray from './array/NumpyArray';
-const Numpy = {
-  Array: NumpyArray,
+import ArrayWithMath from './array/ArrayWithMath';
+export default {
+  Array: ArrayWithMath,
 };
-
-export default Numpy;
