@@ -7,10 +7,10 @@ export default class ArrayWithMath<T> extends BaseArray<T> {
   }
 
   public mean(): number {
-    return this.sumElements() / ArrayUtils.getNumElements(this.shape);
+    return this.cumsum() / ArrayUtils.getNumElements(this.shape);
   }
 
-  public sumElements() {
+  public cumsum() {
     const flatArray = this.data.flat(Infinity) as Array<number>;
     const elementsSum = flatArray.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
