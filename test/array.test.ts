@@ -6,7 +6,7 @@ import {
   matrixNDShape,
 } from './utils/matrices';
 
-describe('Array', () => {
+describe('Base Array Class', () => {
   it('gives correct shape for 2D arrays', () => {
     let array = new ArrayWithMath<Array<Number>>(matrix2D);
 
@@ -48,7 +48,9 @@ describe('Array', () => {
 
     expect(array.ravel()).toEqual(flatMatrixND);
   });
+});
 
+describe('BaseArray enriched with mathematical methods Class', () => {
   it('mean method works as expected', () => {
     var array = new ArrayWithMath<any>(matrix2D);
 
@@ -75,5 +77,18 @@ describe('Array', () => {
     );
 
     expect(array.cumsum()).toEqual(sumElementsFlattenedMatrix);
+  });
+
+  it('cumprod method works as expected', () => {
+    var array = new ArrayWithMath<any>(matrix2D);
+
+    var flattenedMatrix = matrix2D.flat(Infinity);
+
+    var sumElementsFlattenedMatrix = flattenedMatrix.reduce(
+      (accumulator, currentValue) => accumulator * currentValue,
+      1
+    );
+
+    expect(array.cumprod()).toEqual(sumElementsFlattenedMatrix);
   });
 });
