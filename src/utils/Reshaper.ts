@@ -19,7 +19,7 @@ export default class Reshaper<T> {
     const nest = (dimIndex: number): Array<any> => {
       let result: Array<any> = [];
 
-      if (dimIndex == dim.length - 1) {
+      if (dimIndex === dim.length - 1) {
         for (let i = elemIndex; i < elemIndex + dim[dimIndex]; i++) {
           result.push(arr[i]);
         }
