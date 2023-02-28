@@ -32,18 +32,4 @@ export default class MathAddon<T> extends BaseArray<T> {
   public reshape(newShape: number[]) {
     return this.reshapeAndReturnBaseArray(newShape) as MathAddon<T>;
   }
-
-  public median() {
-    const arr = this.ravel().slice() as Array<any>;
-    if (arr.length == 0) {
-      return null;
-    }
-    arr.sort((a, b) => a - b);
-    const midpoint = Math.floor(arr.length / 2);
-    const median =
-      arr.length % 2 === 1
-        ? arr[midpoint]
-        : (arr[midpoint - 1] + arr[midpoint]) / 2;
-    return median;
-  }
 }
