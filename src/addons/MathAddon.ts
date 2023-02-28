@@ -1,7 +1,7 @@
-import BaseArray from './BaseArray';
 import ArrayUtils from '../utils/ArrayUtils';
+import NDArray from '../array/NDArray';
 
-export default class MathAddon<T> extends BaseArray<T> {
+export class MathAddon<T> extends NDArray<T> {
   public cumsum(squareElements: boolean = false) {
     return this.data.flat(Infinity).reduce((accumulator, currentValue) => {
       if (typeof currentValue === 'number') {
@@ -30,6 +30,6 @@ export default class MathAddon<T> extends BaseArray<T> {
   }
 
   public reshape(newShape: number[]) {
-    return this.reshapeAndReturnBaseArray(newShape) as MathAddon<T>;
+    return this.reshapeAndReturnNDArray(newShape) as MathAddon<T>;
   }
 }

@@ -1,3 +1,3 @@
-import StatisticalAddon from './StatisticalAddon';
+import NDArray from './NDArray';
 
-export default StatisticalAddon;
+export default NDArray;

@@ -1,4 +1,7 @@
-import StatisticalAddon from './array';
+import NDArray from './array';
+import * as addons from './addons';
+
 export default {
-  Array: StatisticalAddon,
+  NDArray: NDArray,
+  Addons: addons,
 };
