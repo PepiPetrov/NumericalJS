@@ -1,4 +1,4 @@
-import ArrayWithMath from '../src/array/ArrayWithMath';
+import StatisticalAddon from '../src/array/';
 import {
   matrix2D,
   matrix2DShape,
@@ -8,19 +8,19 @@ import {
 
 describe('Base Array Class', () => {
   it('gives correct shape for 2D arrays', () => {
-    let array = new ArrayWithMath<Array<Number>>(matrix2D);
+    let array = new StatisticalAddon<Array<Number>>(matrix2D);
 
     expect(array.shape).toEqual(matrix2DShape);
   });
 
   it(`gives correct shape for ND arrays (the test is performed with a matrix of shape ${matrixNDShape})`, () => {
-    let array = new ArrayWithMath<Array<any>>(matrixND);
+    let array = new StatisticalAddon<Array<any>>(matrixND);
 
     expect(array.shape).toEqual(matrixNDShape);
   });
 
   it('reshapes 2D arrays in 1D arrays', () => {
-    let array = new ArrayWithMath<ArrayWithMath<Number>>(matrix2D);
+    let array = new StatisticalAddon<StatisticalAddon<Number>>(matrix2D);
 
     let newArray = array.reshape([4]);
 
@@ -28,7 +28,7 @@ describe('Base Array Class', () => {
   });
 
   it('reshapes ND arrays to other ND arrays', () => {
-    let array = new ArrayWithMath<ArrayWithMath<Number>>(matrixND);
+    let array = new StatisticalAddon<StatisticalAddon<Number>>(matrixND);
 
     let newArray = array.reshape([8, 2, 4]);
 
@@ -37,14 +37,14 @@ describe('Base Array Class', () => {
 
   it('flatten method works as expected for 2D arrays', () => {
     let flatMatrix2D = matrix2D.flat(2);
-    let array = new ArrayWithMath<any>(matrix2D);
+    let array = new StatisticalAddon<any>(matrix2D);
 
     expect(array.ravel()).toEqual(flatMatrix2D);
   });
 
   it('flatten method works as expected for ND arrays', () => {
     let flatMatrixND = matrixND.flat(3);
-    let array = new ArrayWithMath<any>(matrixND);
+    let array = new StatisticalAddon<any>(matrixND);
 
     expect(array.ravel()).toEqual(flatMatrixND);
   });
@@ -52,7 +52,7 @@ describe('Base Array Class', () => {
 
 describe('BaseArray enriched with mathematical methods Class', () => {
   it('mean method works as expected', () => {
-    var array = new ArrayWithMath<any>(matrix2D);
+    var array = new StatisticalAddon<any>(matrix2D);
 
     var flattenedMatrix = matrix2D.flat(Infinity);
 
@@ -67,7 +67,7 @@ describe('BaseArray enriched with mathematical methods Class', () => {
   });
 
   it('cumsum method works as expected', () => {
-    var array = new ArrayWithMath<any>(matrix2D);
+    var array = new StatisticalAddon<any>(matrix2D);
 
     var flattenedMatrix = matrix2D.flat(Infinity);
 
@@ -80,7 +80,7 @@ describe('BaseArray enriched with mathematical methods Class', () => {
   });
 
   it('cumprod method works as expected', () => {
-    var array = new ArrayWithMath<any>(matrix2D);
+    var array = new StatisticalAddon<any>(matrix2D);
 
     var flattenedMatrix = matrix2D.flat(Infinity);
 

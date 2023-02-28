@@ -10,7 +10,7 @@ export default class BaseArray<T> {
     this.shape = ArrayUtils.getShape(this.data);
   }
 
-  public reshape(newShape: number[]) {
+  protected reshapeAndReturnBaseArray(newShape: number[]) {
     const numElementsOriginal = ArrayUtils.getNumElements(this.shape);
     const numElementsNew = ArrayUtils.getNumElements(newShape);
 

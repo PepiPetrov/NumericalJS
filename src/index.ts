@@ -1,4 +1,4 @@
-import ArrayWithMath from './array/ArrayWithMath';
+import StatisticalAddon from './array';
 export default {
-  Array: ArrayWithMath,
+  Array: StatisticalAddon,
 };
