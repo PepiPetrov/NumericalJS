@@ -2,16 +2,23 @@
 import ArrayUtils from '../utils/ArrayUtils';
 
 export class MathAddon<T> {
-  public cumsum(squareElements: boolean = false) {
-    return this.data.flat(Infinity).reduce((accumulator, currentValue) => {
-      if (typeof currentValue === 'number') {
-        return (
-          accumulator + (squareElements ? currentValue ** 2 : currentValue)
-        );
+  public cumsum(squareElements: boolean = false): number {
+    const flatData = this.data.flat(Infinity);
+    let sum = 0;
+    let c = 0;
+
+    for (let i = 0; i < flatData.length; i++) {
+      const y = squareElements ? flatData[i] * flatData[i] : flatData[i];
+      const t = sum + y;
+      if (Math.abs(sum) >= Math.abs(y)) {
+        c += sum - t + y;
       } else {
-        return accumulator;
+        c += y - t + sum;
       }
-    }, 0);
+      sum = t;
+    }
+
+    return sum + c;
   }
 
   public cumprod() {
@@ -25,8 +32,19 @@ export class MathAddon<T> {
   }
 
   public mean(): number {
-    const numElements = ArrayUtils.getNumElements(this.shape);
-    return this.cumsum() / numElements;
+    return this.cumsum() / ArrayUtils.getNumElements(this.shape);
+  }
+
+  public geometricMean() {
+    const flatData = this.data.flat(Infinity);
+    const n = flatData.length;
+    let product = 1;
+
+    for (let i = 0; i < n; i++) {
+      product *= flatData[i];
+    }
+
+    return parseFloat(Math.pow(product, 1 / n).toFixed(13));
   }
 
   public min(): number {
@@ -35,5 +53,9 @@ export class MathAddon<T> {
 
   public max(): number {
     return Math.max(...(this.data.flat(Infinity) as Array<number>));
+  }
+
+  public extent() {
+    return [this.min(), this.max()];
   }
 }

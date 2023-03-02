@@ -1,68 +1,107 @@
-import NDArray from '../src/array/';
+import NDArray from '../src/array';
 import { StatisticalAddon } from '../src/addons';
+describe('StatisticalAddon', () => {
+  describe('variance()', () => {
+    it('returns the correct variance', () => {
+      const data = new NDArray<any>([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
 
-describe('NDArray enriched with statistical methods Class', () => {
-  describe('variance', () => {
-    it('calculates the variance correctly for an array of numbers', () => {
-      const data = [1, 2, 3, 4, 5];
-      const array = new NDArray(data);
+      data.addAddon(StatisticalAddon, 'StatAddon');
 
-      array.addAddon(StatisticalAddon, 'StatAddon');
-      expect(array.variance()).toEqual(2);
-    });
-
-    it('calculates the variance correctly for an array with negative numbers', () => {
-      const data = [-1, 0, 1];
-      const array = new NDArray(data);
-
-      array.addAddon(StatisticalAddon, 'StatAddon');
-      expect(array.variance()).toEqual(0.6666666666666666);
+      expect(data.variance()).toEqual(6.666666666666668);
     });
   });
 
-  describe('std', () => {
-    it('calculates the standard deviation correctly for an array of numbers', () => {
-      const data = [1, 2, 3, 4, 5];
-      const array = new NDArray(data);
+  describe('std()', () => {
+    it('returns the correct standard deviation', () => {
+      const data = new NDArray<any>([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
 
-      array.addAddon(StatisticalAddon, 'StatAddon');
+      data.addAddon(StatisticalAddon, 'StatAddon');
 
-      expect(array.std()).toBeCloseTo(1.4142135623731, 4);
-    });
-
-    it('calculates the standard deviation correctly for an array with negative numbers', () => {
-      const data = [-1, 0, 1];
-      const array = new NDArray(data);
-
-      array.addAddon(StatisticalAddon, 'StatAddon');
-
-      expect(array.std()).toEqual(0.816496580927726);
+      expect(data.std()).toEqual(2.5819888974716116);
     });
   });
 
-  describe('median', () => {
-    it('calculates the median correctly for an array of odd length', () => {
-      const data = [1, 2, 3, 4, 5];
-      const array = new NDArray(data);
+  describe('median()', () => {
+    it('returns the correct median', () => {
+      const data = new NDArray<any>([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+      ]);
 
-      array.addAddon(StatisticalAddon, 'StatAddon');
-      expect(array.median()).toEqual(3);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      expect(data.median()).toEqual(5);
     });
 
-    it('calculates the median correctly for an array of even length', () => {
-      const data = [1, 2, 3, 4];
-      const array = new NDArray(data);
+    it('returns null if the data is empty', () => {
+      const data = new NDArray([]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
 
-      array.addAddon(StatisticalAddon, 'StatAddon');
-      expect(array.median()).toEqual(2.5);
+      expect(data.median()).toBeNull();
+    });
+  });
+
+  describe('rootMeanSquare()', () => {
+    it('returns the correct root mean square', () => {
+      const data = new NDArray([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      expect(data.rootMeanSquare()).toEqual(3.8944404818493075);
+    });
+  });
+
+  describe('mode()', () => {
+    it('returns the correct mode', () => {
+      const data = new NDArray([
+        [1, 2, 2, 3],
+        [3, 4, 5, 5],
+      ]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      expect(data.mode()).toEqual(2);
+    });
+  });
+
+  describe('sampleSkewness()', () => {
+    it('returns the correct sample skewness', () => {
+      const data = new NDArray([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      expect(data.sampleSkewness()).toEqual(0);
     });
 
-    it('returns null for an empty array', () => {
-      const data: number[] = [];
-      const array = new NDArray(data);
+    it('returns 0 if there are less than 3 data points', () => {
+      const data = new NDArray([[1, 2]]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
 
-      array.addAddon(StatisticalAddon, 'StatAddon');
-      expect(array.median()).toBeNull();
+      expect(data.sampleSkewness()).toEqual(0);
+    });
+  });
+
+  describe('harmonicMean()', () => {
+    it('returns the correct harmonic mean', () => {
+      const data = new NDArray([
+        [2, 4, 8],
+        [16, 32, 64],
+      ]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      expect(data.harmonicMean()).toEqual(6.095238095238095);
     });
   });
 });
