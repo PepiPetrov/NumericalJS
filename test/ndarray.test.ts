@@ -1,52 +1,59 @@
-import NDArray from '../src/array/';
+import NDArray from '../src/array';
 
-import {
-  matrix2D,
-  matrix2DShape,
-  matrixND,
-  matrixNDShape,
-} from './utils/matrices';
+describe('NDArray', () => {
+  describe('reshape', () => {
+    it('should reshape an array into a 2x3 array', () => {
+      const array = new NDArray([1, 2, 3, 4, 5, 6]);
+      const reshapedArray = array.reshape([2, 3]);
+      expect(reshapedArray.shape).toEqual([2, 3]);
+      expect(reshapedArray.data).toEqual([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
+    });
 
-describe('Base Array Class', () => {
-  it('gives correct shape for 2D arrays', () => {
-    let array = new NDArray(matrix2D);
-
-    expect(array.shape).toEqual(matrix2DShape);
+    it('should throw an error when reshaping to a different size', () => {
+      const array = new NDArray([1, 2, 3, 4, 5, 6]);
+      expect(() => array.reshape([2, 2])).toThrowError(
+        'Original and new shape are different, cannot reshape.'
+      );
+    });
   });
 
-  it(`gives correct shape for ND arrays (the test is performed with a matrix of shape ${matrixNDShape})`, () => {
-    let array = new NDArray(matrixND);
+  describe('isSquare', () => {
+    it('should return true for a square array', () => {
+      const array = new NDArray([
+        [1, 2],
+        [3, 4],
+      ]);
+      expect(array.isSquare()).toBe(true);
+    });
 
-    expect(array.shape).toEqual(matrixNDShape);
+    it('should return false for a non-square array', () => {
+      const array = new NDArray([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
+      expect(array.isSquare()).toBe(false);
+    });
   });
 
-  it('reshapes 2D arrays in 1D arrays', () => {
-    let array = new NDArray(matrix2D);
-
-    let newArray = array.reshape([4]);
-
-    expect(newArray.shape).toEqual([4]);
+  describe('ravel', () => {
+    it('should flatten a 2x3 array into a 1D array', () => {
+      const array = new NDArray([
+        [1, 2, 3],
+        [4, 5, 6],
+      ]);
+      const flattenedArray = array.ravel();
+      expect(flattenedArray.shape).toEqual([6]);
+      expect(flattenedArray.data).toEqual([1, 2, 3, 4, 5, 6]);
+    });
   });
 
-  it('reshapes ND arrays to other ND arrays', () => {
-    let array = new NDArray(matrixND);
-
-    let newArray = array.reshape([8, 2, 4]);
-
-    expect(newArray.shape).toEqual([8, 2, 4]);
-  });
-
-  it('flatten method works as expected for 2D arrays', () => {
-    let flatMatrix2D = matrix2D.flat(Infinity);
-    let array = new NDArray<any>(matrix2D);
-
-    expect(array.ravel().data).toEqual(flatMatrix2D);
-  });
-
-  it('flatten method works as expected for ND arrays', () => {
-    let flatMatrixND = matrixND.flat(Infinity);
-    let array = new NDArray<any>(matrixND);
-
-    expect(array.ravel().data).toEqual(flatMatrixND);
+  describe('toString', () => {
+    it('should return a string representation of the array shape', () => {
+      const array = new NDArray([1, 2, 3]);
+      expect(array.toString()).toBe('Shape: 3');
+    });
   });
 });

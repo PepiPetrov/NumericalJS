@@ -8,7 +8,7 @@ export class AddonManager {
     return [...this.addons.entries()];
   }
 
-  public addAddon(addon: any, name?: string): void {
+  public addAddon(addon: any, name: string = addon.name): void {
     const instance = new addon();
     this.addInstanceProperties(instance);
     this.addons.set(name ?? addon.name, instance);
