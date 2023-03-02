@@ -70,7 +70,6 @@ export class StatisticalAddon<T> extends MathAddon<T> {
     }
 
     const mean = this.mean();
-    const variance = this.variance();
     const std = this.std();
     const skewness =
       flatData.reduce((sum, val) => sum + (val - mean) ** 3, 0) /
