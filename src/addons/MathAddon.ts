@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 import ArrayUtils from '../utils/ArrayUtils';
 
 export class MathAddon<T> {
@@ -27,5 +27,13 @@ export class MathAddon<T> {
   public mean(): number {
     const numElements = ArrayUtils.getNumElements(this.shape);
     return this.cumsum() / numElements;
+  }
+
+  public min(): number {
+    return Math.min(...(this.data.flat(Infinity) as Array<number>));
+  }
+
+  public max(): number {
+    return Math.max(...(this.data.flat(Infinity) as Array<number>));
   }
 }
