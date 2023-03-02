@@ -1,48 +1,18 @@
+import { AddonManager } from '../addons';
 import ArrayUtils from '../utils/ArrayUtils';
 import { inspect } from 'util';
 
-export default class NDArray<T> {
+export default class NDArray<T> extends AddonManager {
   data: T[];
   shape: number[];
-  [key: string]: any;
 
   constructor(array: T[]) {
+    super();
     this.data = array;
     this.shape = ArrayUtils.getShape(this.data);
   }
 
-  public addAddon(addonClass: any) {
-    let currentPrototype = Object.getPrototypeOf(this);
-    while (currentPrototype !== Object.prototype) {
-      if (currentPrototype === addonClass.prototype) {
-        // addon already exists in prototype chain, skip
-        return;
-      }
-      currentPrototype = Object.getPrototypeOf(currentPrototype);
-    }
-
-    const addonKeys = Object.getOwnPropertyNames(addonClass.prototype).filter(
-      prop => prop !== 'constructor'
-    );
-
-    for (const key of addonKeys) {
-      const descriptor = Object.getOwnPropertyDescriptor(
-        addonClass.prototype,
-        key
-      );
-      if (!descriptor) {
-        continue;
-      }
-
-      if (typeof descriptor.value === 'function') {
-        this[key] = descriptor.value.bind(this);
-      } else {
-        this[key] = descriptor.value;
-      }
-    }
-  }
-
-  protected reshapeAndReturnNDArray(newShape: number[]) {
+  public reshape(newShape: number[]) {
     const numElementsOriginal = ArrayUtils.getNumElements(this.shape);
     const numElementsNew = ArrayUtils.getNumElements(newShape);
 
@@ -52,7 +22,17 @@ export default class NDArray<T> {
 
     const reshaper = new ArrayUtils.Reshaper<T>(this.data, newShape);
 
-    return new NDArray<T>(reshaper.reshape());
+    return this.createInstanceWithAddons(reshaper.reshape());
+  }
+
+  private createInstanceWithAddons(data: Array<any>): NDArray<any> {
+    const array = new NDArray<any>(data);
+
+    for (const [name, addon] of this.getEntries()) {
+      array.addAddon(addon, name);
+    }
+
+    return array;
   }
 
   public isSquare(): boolean {

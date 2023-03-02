@@ -1,7 +1,7 @@
+// @ts-nocheck
 import ArrayUtils from '../utils/ArrayUtils';
-import NDArray from '../array/NDArray';
 
-export class MathAddon<T> extends NDArray<T> {
+export class MathAddon<T> {
   public cumsum(squareElements: boolean = false) {
     return this.data.flat(Infinity).reduce((accumulator, currentValue) => {
       if (typeof currentValue === 'number') {
@@ -27,9 +27,5 @@ export class MathAddon<T> extends NDArray<T> {
   public mean(): number {
     const numElements = ArrayUtils.getNumElements(this.shape);
     return this.cumsum() / numElements;
-  }
-
-  public reshape(newShape: number[]) {
-    return this.reshapeAndReturnNDArray(newShape) as MathAddon<T>;
   }
 }
