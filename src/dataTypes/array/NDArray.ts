@@ -1,8 +1,8 @@
-import { AddonManager } from '../addons';
-import ArrayUtils from '../utils/ArrayUtils';
+import { AddonManager } from '../../addons';
+import ArrayUtils from './utils/ArrayUtils';
 import { inspect } from 'util';
 
-export default class NDArray<T> extends AddonManager {
+export class NDArray<T> extends AddonManager {
   data: T[];
   shape: number[];
 
@@ -20,7 +20,7 @@ export default class NDArray<T> extends AddonManager {
       throw new Error('Original and new shape are different, cannot reshape.');
     }
 
-    const reshaper = new ArrayUtils.Reshaper<T>(this.data, newShape);
+    const reshaper = new ArrayUtils.Reshaper<any>(this.data, newShape);
 
     return this.createInstanceWithAddons(reshaper.reshape());
   }
@@ -42,6 +42,11 @@ export default class NDArray<T> extends AddonManager {
 
   public ravel() {
     return new NDArray(this.data.flat(Infinity) as Array<any>);
+  }
+
+  public map<U>(func: (value: T) => U): NDArray<U> {
+    const newData = this.data.map(func);
+    return this.createInstanceWithAddons(newData);
   }
 
   public toString(): string {

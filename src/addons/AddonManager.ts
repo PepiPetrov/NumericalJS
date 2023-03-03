@@ -1,17 +1,19 @@
 export class AddonManager {
-  protected addons: Map<string, any> = new Map();
+  private addons: Map<string, any> = new Map();
+  private addonClasses: Map<string, any> = new Map();
   private requiredAddons: Array<any> = [];
 
   [key: string]: any;
 
   public getEntries() {
-    return [...this.addons.entries()];
+    return Array.from(this.addonClasses.entries());
   }
 
-  public addAddon(addon: any, name: string = addon.name): void {
+  public addAddon(addon: any, name: string): void {
     const instance = new addon();
     this.addInstanceProperties(instance);
-    this.addons.set(name ?? addon.name, instance);
+    this.addons.set(name, instance);
+    this.addonClasses.set(name, addon);
     this.addRequiredAddons(instance);
   }
 
@@ -20,8 +22,13 @@ export class AddonManager {
     if (!instance) return;
     this.removeInstanceProperties(instance);
     this.addons.delete(name);
+    this.addonClasses.delete(name);
     this.removeRequiredAddons(instance);
     this.addRequiredAddons(this.requiredAddons);
+  }
+
+  public getAddon(name: string): any {
+    return this.addonClasses.get(name);
   }
 
   private addInstanceProperties(instance: any): void {
@@ -42,22 +49,24 @@ export class AddonManager {
   }
 
   private addRequiredAddons(instance: any): void {
-    if (!instance.addRequiredAddons) return;
-    instance.addRequiredAddons.forEach((addon: any) => {
+    if (!instance.requiredAddons) return;
+    instance.requiredAddons.forEach((addon: any) => {
       const instance = new addon();
       this.addInstanceProperties(instance);
       this.addons.set(addon.name, instance);
+      this.addonClasses.set(addon.name, addon);
       this.addRequiredAddons(instance);
     });
   }
 
   private removeRequiredAddons(instance: any): void {
-    if (!instance.addRequiredAddons) return;
-    instance.addRequiredAddons.forEach((addon: any) => {
+    if (!instance.requiredAddons) return;
+    instance.requiredAddons.forEach((addon: any) => {
       const instance = this.addons.get(addon.name);
       if (!instance) return;
       this.removeInstanceProperties(instance);
       this.addons.delete(addon.name);
+      this.addonClasses.delete(addon.name);
       this.removeRequiredAddons(instance);
     });
   }

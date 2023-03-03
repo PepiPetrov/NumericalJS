@@ -1,7 +1,7 @@
-import NDArray from './array';
+import * as dataTypes from './dataTypes';
 import * as addons from './addons';
 
 export default {
-  NDArray: NDArray,
+  DataTypes: dataTypes,
   Addons: addons,
 };

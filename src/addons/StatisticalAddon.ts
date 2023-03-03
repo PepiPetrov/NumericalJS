@@ -1,8 +1,8 @@
 //@ts-nocheck
-import ArrayUtils from '../utils/ArrayUtils';
+import ArrayUtils from '../dataTypes/array/utils/ArrayUtils';
 import { MathAddon } from './MathAddon';
 
-export class StatisticalAddon<T> extends MathAddon<T> {
+export class StatisticalAddon<T> {
   requiredAddons: Array<any> = [MathAddon];
 
   public variance(): number {
@@ -87,5 +87,20 @@ export class StatisticalAddon<T> extends MathAddon<T> {
       sum += 1 / flatData[i];
     }
     return flatData.length / sum;
+  }
+
+  public zscore() {
+    if (this.data.length === 0) {
+      throw new Error('Cannot calculate z-score of empty array');
+    }
+
+    const mean = this.mean();
+    const std = this.std();
+
+    if (std === 0) {
+      return this.map(() => NaN).data;
+    }
+
+    return this.map(val => (val - mean) / std).data;
   }
 }

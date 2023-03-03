@@ -1,5 +1,5 @@
 //@ts-nocheck
-import ArrayUtils from '../utils/ArrayUtils';
+import ArrayUtils from '../dataTypes/array/utils/ArrayUtils';
 
 export class MathAddon<T> {
   public cumsum(squareElements: boolean = false): number {

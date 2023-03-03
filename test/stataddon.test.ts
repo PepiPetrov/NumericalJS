@@ -1,4 +1,4 @@
-import NDArray from '../src/array';
+import { NDArray } from '../src/dataTypes/array/NDArray';
 import { StatisticalAddon } from '../src/addons';
 describe('StatisticalAddon', () => {
   describe('variance()', () => {
@@ -102,6 +102,52 @@ describe('StatisticalAddon', () => {
       data.addAddon(StatisticalAddon, 'StatAddon');
 
       expect(data.harmonicMean()).toEqual(6.095238095238095);
+    });
+  });
+
+  describe('zscore()', () => {
+    it('returns an array of z-scores when called on an array of numbers', () => {
+      const data = new NDArray([1, 2, 3, 4, 5]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      const zscores = data.zscore();
+      expect(zscores).toEqual([
+        -1.414213562373095,
+        -0.7071067811865475,
+        0,
+        0.7071067811865475,
+        1.414213562373095,
+      ]);
+    });
+
+    it('correctly handles an array with a single element', () => {
+      const data = new NDArray([1]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      const zscores = data.zscore();
+      expect(zscores).toEqual([NaN]);
+    });
+
+    it('correctly handles an array with all equal elements', () => {
+      const data = new NDArray([1, 1, 1, 1, 1]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      const zscores = data.zscore();
+      expect(zscores).toEqual([NaN, NaN, NaN, NaN, NaN]);
+    });
+
+    it('calculates z-score correctly for an array with negative numbers', () => {
+      const data = new NDArray([-2, 4, -6, 8]);
+      data.addAddon(StatisticalAddon, 'StatAddon');
+
+      const zscores = data.zscore();
+
+      expect(zscores).toEqual([
+        -0.5570860145311556,
+        0.5570860145311556,
+        -1.299867367239363,
+        1.299867367239363,
+      ]);
     });
   });
 });
