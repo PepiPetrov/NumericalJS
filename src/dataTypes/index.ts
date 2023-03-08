@@ -1,3 +1,1 @@
-import { NDArray as NDArr } from './array/NDArray';
-
-export const NDArray = NDArr;
+export { NDArray } from './array/NDArray';

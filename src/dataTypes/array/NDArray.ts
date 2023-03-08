@@ -1,4 +1,4 @@
-import { AddonManager } from '../../addons';
+import { AddonManager } from 'js-class-utilities';
 import ArrayUtils from './utils/ArrayUtils';
 import { inspect } from 'util';
 

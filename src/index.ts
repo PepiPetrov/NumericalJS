@@ -1,7 +1,4 @@
-import * as dataTypes from './dataTypes';
-import * as addons from './addons';
-
-export default {
-  DataTypes: dataTypes,
-  Addons: addons,
-};
+// prettier-ignore
+export * as Addons from './addons';
+export * as DataTypes from './dataTypes';
+export * as Funcs from './funcs';

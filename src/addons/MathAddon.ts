@@ -1,4 +1,4 @@
-//@ts-nocheck
+// @ts-nocheck
 import ArrayUtils from '../dataTypes/array/utils/ArrayUtils';
 
 export class MathAddon<T> {
