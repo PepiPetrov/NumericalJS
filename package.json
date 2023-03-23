@@ -50,7 +50,7 @@
     "@size-limit/preset-small-lib": "^8.2.4",
     "@types/node": "^18.15.5",
     "husky": "^8.0.3",
-    "nodemon": "^2.0.21",
+    "nodemon": "^2.0.22",
     "pinst": "^3.0.0",
     "size-limit": "^8.2.4",
     "tsdx": "^0.14.1",
